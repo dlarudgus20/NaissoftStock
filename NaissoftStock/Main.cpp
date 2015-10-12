@@ -78,12 +78,15 @@ int main(void)
 				printf("\n 어느 회사의 주식을 구입하시겠습니까?\n 취소하려면 0을 선택하세요.\n");
 				scanf("%d", &company);
 
-				printf("\n 몇 개를 구입하시겠습니까?\n");
-				scanf("%d", &stocknum);
-				
-				buyStock(stocknum, company);
+				if (company != 0)
+				{
+					printf("\n 몇 개를 구입하시겠습니까?\n");
+					scanf("%d", &stocknum);
 
-				Sleep(500);
+					buyStock(stocknum, company);
+
+					Sleep(500);
+				}
 				system("cls");
 				break;
 			case 'v' :

@@ -207,32 +207,29 @@ void payback()
 
 void buyStock(int stocknum, int company)
 {
-	if (company != 0)
+	for (int i = 0; i < stocknum; i++)
 	{
-		for (int i = 0; i < stocknum; i++)
+		if (company <= MAX_COMPANY)
 		{
-			if (company <= MAX_COMPANY)
+			if (StockMoney[company - 1] <= Money)
 			{
-				if (StockMoney[company - 1] <= Money)
-				{
-					system("cls");
-					now = head;
+				system("cls");
+				now = head;
 
-					tmp.company = company - 1;
-					tmp.price = StockMoney[company - 1];
-					now = InsertStock(now, &tmp);
+				tmp.company = company - 1;
+				tmp.price = StockMoney[company - 1];
+				now = InsertStock(now, &tmp);
 
-					Stocks++;
-					StockDeal++;
-					printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockMoney[company - 1], Stocks);
-					Money -= StockMoney[company - 1];
-					printf(" 남은 돈은 %d원입니다.\n", Money);
-				}
-				else
-				{
-					printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
-					break;
-				}
+				Stocks++;
+				StockDeal++;
+				printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockMoney[company - 1], Stocks);
+				Money -= StockMoney[company - 1];
+				printf(" 남은 돈은 %d원입니다.\n", Money);
+			}
+			else
+			{
+				printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
+				break;
 			}
 		}
 	}
