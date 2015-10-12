@@ -62,7 +62,7 @@ void init()
 void ShowMain()
 {
 	gotoxy(0, 1);
-	printf(" Stock - Windows®용 주식 게임\n ver 1.3.1004\n\n B 사기, S 팔기, V 주식 목록, P 일시 정지 / 메뉴");
+	printf(" Stock - Windows®용 주식 게임\n ver 1.3.1012\n\n B 사기, S 팔기, V 주식 목록, P 일시 정지 / 메뉴");
 	gotoxy(0, 4);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
 	ShowStockPrice();
