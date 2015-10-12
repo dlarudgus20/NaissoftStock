@@ -39,3 +39,9 @@ void loan(int);
 void interest();
 
 void payback();
+
+void buyStock(int, int);
+
+void sellStock(int);
+
+void showTipNews();

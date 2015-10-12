@@ -55,6 +55,8 @@ void init()
 	for (int i = 0; i < MAX_COMPANY; i++) ifGood[i] = true;
 	Stocks = StockDeal = 0;
 	loanMoney = 0;
+	ChangeStockMoney();
+	hour++;
 }
 
 void ShowMain()
@@ -172,11 +174,15 @@ void ShowStockPrice()
 		printf(" 회사 : %-20s │ 가격 : %5d원  ", CompanyName[i], StockMoney[i]);
 		if (PrevStockMoney[i] < StockMoney[i])
 		{
+			textcolor(2);
 			printf("▲%4d원 ", StockMoney[i] - PrevStockMoney[i]);
+			textcolor(7);
 		}
 		else if (PrevStockMoney[i] > StockMoney[i])
 		{
+			textcolor(14);
 			printf("▼%4d원 ", -1 * (StockMoney[i] - PrevStockMoney[i]));
+			textcolor(7);
 		}
 		printf("\n");
 	}
@@ -197,4 +203,66 @@ void payback()
 {
 	Money -= loanMoney;
 	loanMoney = 0;
+}
+
+void buyStock(int stocknum, int company)
+{
+	if (company != 0)
+	{
+		for (int i = 0; i < stocknum; i++)
+		{
+			if (company <= MAX_COMPANY)
+			{
+				if (StockMoney[company - 1] <= Money)
+				{
+					system("cls");
+					now = head;
+
+					tmp.company = company - 1;
+					tmp.price = StockMoney[company - 1];
+					now = InsertStock(now, &tmp);
+
+					Stocks++;
+					StockDeal++;
+					printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockMoney[company - 1], Stocks);
+					Money -= StockMoney[company - 1];
+					printf(" 남은 돈은 %d원입니다.\n", Money);
+				}
+				else
+				{
+					printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
+					break;
+				}
+			}
+		}
+	}
+}
+
+void sellStock(int i)
+{
+	Stock *f = FindStock(i - 1);
+	printf("\n 현재 %s 회사 주식의 값은 %d원이고, 팔면 %d원의 이익이 나게 됩니다.\n", CompanyName[f->company], StockMoney[f->company], StockMoney[f->company] - f->price);
+	printf(" 주식을 파시겠습니까? Y / N ");
+	char k;
+	scanf(" %c", &k);
+	if (k == 'Y')
+	{
+		Money += (StockMoney[f->company]);
+		DeleteStock(f);
+	}
+}
+
+void showTipNews()
+{
+	gotoxy(0, 7);
+	for (int i = 0; i < 80; i++) printf(" ");
+	gotoxy(0, 7);
+	if (rand() % 3 == 0)
+		printf(" 팁 : %s", Tips[rand() % MAX_TIP]);
+	else
+	{
+		int comp = rand() % MAX_COMPANY;
+		if (ifGood[comp] == true) printf(" NEWS : %s%s", CompanyName[comp], GoodNews[rand() % MAX_NEWS]);
+		else printf(" NEWS : %s%s", CompanyName[comp], BadNews[rand() % MAX_NEWS]);
+	}
 }

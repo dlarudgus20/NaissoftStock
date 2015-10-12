@@ -81,32 +81,8 @@ int main(void)
 				printf("\n 몇 개를 구입하시겠습니까?\n");
 				scanf("%d", &stocknum);
 				
-				for (int i = 0; i < stocknum; i++)
-				{
-					if (company != 0 && company <= MAX_COMPANY)
-					{
-						if (StockMoney[company - 1] <= Money)
-						{
-							system("cls");
-							now = head;
+				buyStock(stocknum, company);
 
-							tmp.company = company - 1;
-							tmp.price = StockMoney[company - 1];
-							now = InsertStock(now, &tmp);
-
-							Stocks++;
-							StockDeal++;
-							printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockMoney[company - 1], Stocks);
-							Money -= StockMoney[company - 1];
-							printf(" 남은 돈은 %d원입니다.\n", Money);
-						}
-						else
-						{
-							printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
-							break;
-						}
-					}
-				}
 				Sleep(500);
 				system("cls");
 				break;
@@ -201,19 +177,7 @@ int main(void)
 					}
 					printf("\n 돌아가려면 0을 선택하세요.\n");
 					scanf("%d", &i);
-					if (i != 0)
-					{
-						Stock *f = FindStock(i - 1);
-						printf("\n 현재 %s 회사 주식의 값은 %d원이고, 팔면 %d원의 이익이 나게 됩니다.\n", CompanyName[f->company], StockMoney[f->company], StockMoney[f->company] - f->price);
-						printf(" 주식을 파시겠습니까? Y / N ");
-						char k;
-						scanf(" %c", &k);
-						if (k == 'Y')
-						{
-							Money += (StockMoney[f->company]);
-							DeleteStock(f);
-						}
-					}
+					if (i != 0) sellStock(i);
 				}
 				system("cls");
 				break;
@@ -222,28 +186,16 @@ int main(void)
 		}
 		
 		for (i = 0; i < MAX_COMPANY; i++)
-		{
 			PrevStockMoney[i] = StockMoney[i];
-		}
+
 		if (cnt % 20 == 0)
 		{
 			ChangeStockMoney();
 			hour++;
 		}
-		if (cnt % 60 == 0)
-		{
-			gotoxy(0, 7);
-			for (int i = 0; i < 80; i++) printf(" ");
-			gotoxy(0, 7);
-			if (rand() % 3 == 0)
-				printf(" 팁 : %s", Tips[rand() % MAX_TIP]);
-			else
-			{
-				int comp = rand() % MAX_COMPANY;
-				if (ifGood[comp] == true) printf(" NEWS : %s%s", CompanyName[comp], GoodNews[rand() % MAX_NEWS]);
-				else printf(" NEWS : %s%s", CompanyName[comp], BadNews[rand() % MAX_NEWS]);
-			}
-		}
+
+		if (cnt % 60 == 0) showTipNews();
+		
 		if (hour == 1)
 		{
 			for (int i = 0; i < MAX_COMPANY; i++)
