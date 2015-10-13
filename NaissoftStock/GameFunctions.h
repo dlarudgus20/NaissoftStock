@@ -32,7 +32,9 @@ void load();
 
 void save();
 
-void ShowStockPrice();
+void ShowStockPrice(int);
+
+void PrintStockPrice(int);
 
 void loan(int);
 

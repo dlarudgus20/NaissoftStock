@@ -10,7 +10,7 @@ int main(void)
 	int i, j, cnt, company, stocknum, loanmoney;
 	int days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-	int menu;
+	int menu, mode;
 	char c, ch, pausemenu;
 
 	system("title 주식 게임");
@@ -29,6 +29,7 @@ int main(void)
 	InitStock();
 	init();
 	i = j = cnt = month = day = hour = company = 0;
+	mode = 0;
 
 	switch (menu)
 	{
@@ -54,10 +55,10 @@ int main(void)
 			printf("\n 파산... 3000원 대출해 드리겠습니다.");
 			getchar();
 			loan(3000);
-			Money = 3000;
 			system("cls");
 		}
 		ShowMain();
+		ShowStockPrice(mode);
 
 		printf("\n %d월 %d일 %d시", month + 1, day + 1, hour);
 		printf("\n\n 1달마다 세금을 냅니다. 내야 할 세금은 %d원입니다.\n %d일 남았습니다.\n", (15000 + (Money / 100)), days[month] - day);
@@ -183,6 +184,10 @@ int main(void)
 					if (i != 0) sellStock(i);
 				}
 				system("cls");
+				break;
+			case '*':
+				mode++;
+				if (mode > 2) mode = 0;
 				break;
 			default:
 				break;

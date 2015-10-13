@@ -62,10 +62,9 @@ void init()
 void ShowMain()
 {
 	gotoxy(0, 1);
-	printf(" Stock - Windows®용 주식 게임\n ver 1.3.1012\n\n B 사기, S 팔기, V 주식 목록, P 일시 정지 / 메뉴");
+	printf(" Stock - Windows®용 주식 게임\n ver 1.3.1013\n\n B 사기, S 팔기, V 주식 목록, P 일시 정지 메뉴, * 보기 전환");
 	gotoxy(0, 4);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
-	ShowStockPrice();
 }
 
 void ChangeStockMoney()
@@ -167,25 +166,87 @@ void save()
 	fclose(save);
 }
 
-void ShowStockPrice()
+void ShowStockPrice(int mode)
 {
-	for (int i = 0; i < MAX_COMPANY; i++)
+	if (mode == 0)
 	{
-		printf(" 회사 : %-20s │ 가격 : %5d원  ", CompanyName[i], StockMoney[i]);
-		if (PrevStockMoney[i] < StockMoney[i])
-		{
-			textcolor(2);
-			printf("▲%4d원 ", StockMoney[i] - PrevStockMoney[i]);
-			textcolor(7);
-		}
-		else if (PrevStockMoney[i] > StockMoney[i])
-		{
-			textcolor(14);
-			printf("▼%4d원 ", -1 * (StockMoney[i] - PrevStockMoney[i]));
-			textcolor(7);
-		}
-		printf("\n");
+		for (int i = 0; i < MAX_COMPANY; i++) PrintStockPrice(i);
+		return;
 	}
+
+	int order[MAX_COMPANY], tmp;
+	for (int i = 0; i < MAX_COMPANY; i++) order[i] = StockMoney[i];
+
+	if (mode == 1)
+	{
+		for (int i = 0; i < MAX_COMPANY; i++)
+		{
+			for (int j = 0; j < MAX_COMPANY; j++)
+			{
+				if (order[i] > order[j])
+				{
+					tmp = order[i];
+					order[i] = order[j];
+					order[j] = tmp;
+				}
+			}
+		}
+		for (int i = 0; i < MAX_COMPANY; i++)
+		{
+			for (int j = 0; j < MAX_COMPANY; j++)
+			{
+				if (order[i] == StockMoney[j])
+				{
+					PrintStockPrice(j);
+					order[i] = 0;
+				}
+			}
+		}
+	}
+	if (mode == 2)
+	{
+		for (int i = 0; i < MAX_COMPANY; i++)
+		{
+			for (int j = 0; j < MAX_COMPANY; j++)
+			{
+				if (order[i] < order[j])
+				{
+					tmp = order[i];
+					order[i] = order[j];
+					order[j] = tmp;
+				}
+			}
+		}
+		for (int i = 0; i < MAX_COMPANY; i++)
+		{
+			for (int j = 0; j < MAX_COMPANY; j++)
+			{
+				if (order[i] == StockMoney[j])
+				{
+					PrintStockPrice(j);
+					order[i] = 0;
+				}
+			}
+		}
+	}
+}
+
+void PrintStockPrice(int i)
+{
+	printf(" 회사 : %-20s │ 가격 : %5d원  ", CompanyName[i], StockMoney[i]);
+	if (PrevStockMoney[i] < StockMoney[i])
+	{
+		textcolor(2);
+		printf("▲%4d원 ", StockMoney[i] - PrevStockMoney[i]);
+		textcolor(7);
+	}
+	else if (PrevStockMoney[i] > StockMoney[i])
+	{
+		textcolor(14);
+		printf("▼%4d원 ", -1 * (StockMoney[i] - PrevStockMoney[i]));
+		textcolor(7);
+	}
+	printf("\n");
 }
 
 void loan(int lmoney)
