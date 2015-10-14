@@ -267,6 +267,7 @@ int main(void)
 		case 'w':
 			if (timemode == 1)
 			{
+				while (cnt % 20 != 0) cnt++;
 				cnt += 20;
 				Sleep(300);
 			}
