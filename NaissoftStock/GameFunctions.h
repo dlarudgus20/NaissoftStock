@@ -22,6 +22,8 @@ extern int month, day, hour;
 extern char *CompanyName[MAX_COMPANY], *Tips[MAX_TIP], *GoodNews[MAX_NEWS], *BadNews[MAX_NEWS];
 extern Stock *head, *now, tmp;
 
+extern int viewmode, timemode;
+
 void init();
 
 void ShowMain();

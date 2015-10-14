@@ -11,6 +11,8 @@ bool ifGood[MAX_COMPANY];
 int month, day, hour;
 FILE input, output;
 
+int viewmode, timemode;
+
 char *CompanyName[MAX_COMPANY] =
 {
 	"Naissoft",
@@ -57,12 +59,14 @@ void init()
 	loanMoney = 0;
 	ChangeStockMoney();
 	hour++;
+	viewmode = timemode = 0;
 }
 
 void ShowMain()
 {
 	gotoxy(0, 1);
-	printf(" Stock - Windows®용 주식 게임\n ver 1.3.1013\n\n B 사기, S 팔기, V 주식 목록, P 일시 정지 메뉴, * 보기 전환");
+	printf(" Stock - Windows®용 주식 게임\n ver 1.4.1014\n\n B 사기, S 팔기, V 주식 목록, Esc 일시 정지 메뉴, T 설정");
+	if (timemode == 1) printf(" W 기다리기");
 	gotoxy(0, 4);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
 }
@@ -136,7 +140,7 @@ void load()
 		ifGood[i] = _rotr(ifGood[i], 1);
 	}
 
-	fscanf(save, "%d %d %d %d %d %d %d", &Money, &loanMoney, &Stocks, &StockDeal, &month, &day, &hour);
+	fscanf(save, "%d %d %d %d %d %d %d %d %d", &Money, &loanMoney, &Stocks, &StockDeal, &month, &day, &hour, &viewmode, &timemode);
 	Money = _rotr(Money, 1); loanMoney = _rotr(loanMoney, 1); Stocks = _rotr(Stocks, 1);
 	StockDeal = _rotr(StockDeal, 1); month = _rotr(month, 1); day = _rotr(day, 1); hour = _rotr(hour, 1);
 
@@ -160,8 +164,8 @@ void save()
 	for (int i = 0; i < MAX_COMPANY; i++)
 		fprintf(save, "%d ", _rotl(ifGood[i], 1));
 
-	fprintf(save, "%d %d %d %d %d %d %d", _rotl(Money, 1), _rotl(loanMoney, 1), _rotl(Stocks, 1), _rotl(StockDeal, 1),
-		_rotl(month, 1), _rotl(day, 1), _rotl(hour, 1));
+	fprintf(save, "%d %d %d %d %d %d %d %d %d", _rotl(Money, 1), _rotl(loanMoney, 1), _rotl(Stocks, 1), _rotl(StockDeal, 1),
+		_rotl(month, 1), _rotl(day, 1), _rotl(hour, 1), viewmode, timemode);
 
 	fclose(save);
 }

@@ -16,3 +16,5 @@ void setcursortype(CURSOR_TYPE);
 void type_effect(char *, int);
 
 void clearbuffer();
+
+void titleLine(const char *);
