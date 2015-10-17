@@ -78,15 +78,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arts.cpp" />
     <ClCompile Include="GameFunctions.cpp" />
     <ClCompile Include="Lib.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Stock.cpp" />
+    <ClCompile Include="StockFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arts.h" />
     <ClInclude Include="GameFunctions.h" />
     <ClInclude Include="Lib.h" />
     <ClInclude Include="Stock.h" />
+    <ClInclude Include="StockFunctions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

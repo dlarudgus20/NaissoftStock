@@ -1,30 +1,8 @@
-#include <stdio.h>
-#include <time.h>
-#include <conio.h>
-#include <stdlib.h>
-#include <Windows.h>
-
 #include "GameFunctions.h"
 
-int Money, StockMoney[MAX_COMPANY], PrevStockMoney[MAX_COMPANY], Stocks, StockDeal, loanMoney;
-bool ifGood[MAX_COMPANY];
 int month, day, hour;
-FILE input, output;
 
 int viewmode, timemode;
-
-char *CompanyName[MAX_COMPANY] =
-{
-	"Naissoft",
-	"앵그리소프트웨어너드",
-	"암겨농업",
-	"MK Electronics",
-	"폭펭군수회사",
-	"CJ 제일손연재",
-	"KJS공업",
-	"수배자유령회사",
-	"기야중공업",
-};
 
 char *Tips[MAX_TIP] =
 {
@@ -50,14 +28,16 @@ char *BadNews[MAX_NEWS] =
 	" 주식 팔자.. 외국인 대규모 매도에 주가 급락"
 };
 
+int days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
 void init()
 {
 	Money = DEF_MONEY;
-	for (int i = 0; i < MAX_COMPANY; i++) StockMoney[i] = 9000;
+	for (int i = 0; i < MAX_COMPANY; i++) StockPrice[i] = 9000;
 	for (int i = 0; i < MAX_COMPANY; i++) ifGood[i] = true;
 	Stocks = StockDeal = 0;
 	loanMoney = 0;
-	ChangeStockMoney();
+	ChangeStockPrice();
 	hour++;
 	viewmode = timemode = 0;
 }
@@ -69,39 +49,11 @@ void ShowMain()
 	if (timemode == 1) printf(" W 기다리기");
 	gotoxy(0, 4);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
-}
 
-void ChangeStockMoney()
-{
-	srand((int)time(NULL));
+	ShowStockPrice(viewmode);
 
-	for (int i = 0; i < MAX_COMPANY; i++)
-	{
-		if (ifGood[i] == true)
-		{
-			if ((rand() % 2) == 0)
-			{
-				StockMoney[i] += (rand() % 1000);
-			}
-			else
-			{
-				StockMoney[i] -= (rand() % 100);
-			}
-		}
-		else
-		{
-			if ((rand() % 2) == 0)
-			{
-				StockMoney[i] += (rand() % 500);
-			}
-			else
-			{
-				StockMoney[i] -= (rand() % 1000);
-			}
-		}
-		if (StockMoney[i] < 2000) StockMoney[i] = 2000;
-		StockMoney[i] = StockMoney[i] / 10 * 10;
-	}
+		printf("\n %d월 %d일 %d시", month + 1, day + 1, hour);
+		printf("\n\n 1달마다 세금을 냅니다. 내야 할 세금은 %d원입니다.\n %d일 남았습니다.\n", (15000 + (Money / 100)), days[month] - day);
 }
 
 void load()
@@ -130,8 +82,8 @@ void load()
 
 	for (int i = 0; i < MAX_COMPANY; i++)
 	{
-		fscanf(save, "%d ", &StockMoney[i]);
-		StockMoney[i] = _rotr(StockMoney[i], 1);
+		fscanf(save, "%d ", &StockPrice[i]);
+		StockPrice[i] = _rotr(StockPrice[i], 1);
 	}
 
 	for (int i = 0; i < MAX_COMPANY; i++)
@@ -159,7 +111,7 @@ void save()
 		fprintf(save, "%d %d ", _rotl(now->company, 1), _rotl(now->price, 1));
 
 	for (int i = 0; i < MAX_COMPANY; i++)
-		fprintf(save, "%d ", _rotl(StockMoney[i], 1));
+		fprintf(save, "%d ", _rotl(StockPrice[i], 1));
 
 	for (int i = 0; i < MAX_COMPANY; i++)
 		fprintf(save, "%d ", _rotl(ifGood[i], 1));
@@ -168,150 +120,6 @@ void save()
 		_rotl(month, 1), _rotl(day, 1), _rotl(hour, 1), viewmode, timemode);
 
 	fclose(save);
-}
-
-void ShowStockPrice(int mode)
-{
-	if (mode == 0)
-	{
-		for (int i = 0; i < MAX_COMPANY; i++) PrintStockPrice(i);
-		return;
-	}
-
-	int order[MAX_COMPANY], tmp;
-	for (int i = 0; i < MAX_COMPANY; i++) order[i] = StockMoney[i];
-
-	if (mode == 1)
-	{
-		for (int i = 0; i < MAX_COMPANY; i++)
-		{
-			for (int j = 0; j < MAX_COMPANY; j++)
-			{
-				if (order[i] > order[j])
-				{
-					tmp = order[i];
-					order[i] = order[j];
-					order[j] = tmp;
-				}
-			}
-		}
-		for (int i = 0; i < MAX_COMPANY; i++)
-		{
-			for (int j = 0; j < MAX_COMPANY; j++)
-			{
-				if (order[i] == StockMoney[j])
-				{
-					PrintStockPrice(j);
-					order[i] = 0;
-				}
-			}
-		}
-	}
-	if (mode == 2)
-	{
-		for (int i = 0; i < MAX_COMPANY; i++)
-		{
-			for (int j = 0; j < MAX_COMPANY; j++)
-			{
-				if (order[i] < order[j])
-				{
-					tmp = order[i];
-					order[i] = order[j];
-					order[j] = tmp;
-				}
-			}
-		}
-		for (int i = 0; i < MAX_COMPANY; i++)
-		{
-			for (int j = 0; j < MAX_COMPANY; j++)
-			{
-				if (order[i] == StockMoney[j])
-				{
-					PrintStockPrice(j);
-					order[i] = 0;
-				}
-			}
-		}
-	}
-}
-
-void PrintStockPrice(int i)
-{
-	printf(" 회사 : %-20s │ 가격 : %5d원  ", CompanyName[i], StockMoney[i]);
-	if (PrevStockMoney[i] < StockMoney[i])
-	{
-		textcolor(2);
-		printf("▲%4d원 ", StockMoney[i] - PrevStockMoney[i]);
-		textcolor(7);
-	}
-	else if (PrevStockMoney[i] > StockMoney[i])
-	{
-		textcolor(14);
-		printf("▼%4d원 ", -1 * (StockMoney[i] - PrevStockMoney[i]));
-		textcolor(7);
-	}
-	printf("\n");
-}
-
-void loan(int lmoney)
-{
-	loanMoney += lmoney;
-	Money += lmoney;
-}
-
-void interest()
-{
-	loanMoney += (loanMoney * 0.05);
-}
-
-void payback()
-{
-	Money -= loanMoney;
-	loanMoney = 0;
-}
-
-void buyStock(int stocknum, int company)
-{
-	for (int i = 0; i < stocknum; i++)
-	{
-		if (company <= MAX_COMPANY)
-		{
-			if (StockMoney[company - 1] <= Money)
-			{
-				system("cls");
-				now = head;
-
-				tmp.company = company - 1;
-				tmp.price = StockMoney[company - 1];
-				now = InsertStock(now, &tmp);
-
-				Stocks++;
-				StockDeal++;
-				printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockMoney[company - 1], Stocks);
-				Money -= StockMoney[company - 1];
-				printf(" 남은 돈은 %d원입니다.\n", Money);
-			}
-			else
-			{
-				printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
-				break;
-			}
-		}
-	}
-}
-
-void sellStock(int i)
-{
-	Stock *f = FindStock(i - 1);
-	printf("\n 현재 %s 회사 주식의 값은 %d원이고, 팔면 %d원의 이익이 나게 됩니다.\n", CompanyName[f->company], StockMoney[f->company], StockMoney[f->company] - f->price);
-	printf(" 주식을 파시겠습니까? Y / N ");
-	char k;
-	scanf(" %c", &k);
-	if (k == 'Y')
-	{
-		Money += (StockMoney[f->company]);
-		DeleteStock(f);
-	}
 }
 
 void showTipNews()
@@ -327,4 +135,119 @@ void showTipNews()
 		if (ifGood[comp] == true) printf(" NEWS : %s%s", CompanyName[comp], GoodNews[rand() % MAX_NEWS]);
 		else printf(" NEWS : %s%s", CompanyName[comp], BadNews[rand() % MAX_NEWS]);
 	}
+}
+
+void buyMenu()
+{
+	int company, stocknum;
+
+	system("cls");
+	titleLine("주식 사기");
+	printf(" 주식 가격 :\n\n");
+	for (int i = 0; i < MAX_COMPANY; i++)
+	{
+		printf(" %d : %-20s, 가격 : %d원\n", i + 1, CompanyName[i], StockPrice[i]);
+	}
+
+	printf("\n 어느 회사의 주식을 구입하시겠습니까?\n 취소하려면 0을 선택하세요.\n");
+	scanf("%d", &company);
+
+	if (company != 0)
+	{
+		printf("\n 몇 개를 구입하시겠습니까?\n");
+		scanf("%d", &stocknum);
+
+		buyStock(stocknum, company);
+
+		Sleep(500);
+	}
+	system("cls");
+	return;
+}
+
+void sellMenu()
+{
+	int i, j;
+	i = 1;
+	while (i != 0)
+	{
+		system("cls");
+		titleLine("주식 팔기");
+		printf("\n [ 팔 주식을 고르세요 ]\n\n");
+		j = 1;
+		for (now = head->next; now; now = now->next)
+		{
+			printf("\n %d. 회사 : %-20s, 가격 : %d원", j, CompanyName[now->company], now->price);
+			j++;
+		}
+		printf("\n 돌아가려면 0을 선택하세요.\n");
+		scanf("%d", &i);
+		if (i != 0) sellStock(i);
+	}
+	system("cls");
+}
+
+void showStats()
+{
+	system("cls");
+	titleLine("통  계");
+	printf("\n 주식을 사거나 판 횟수 : %d\n 현재 가진 돈 : %d원\n 주식 개수 : %d\n\n 돌아가려면 Enter를 누르세요.\n", StockDeal, Money, Stocks);
+	getchar();
+	system("cls");
+}
+
+void getKey(char *c)
+{
+	if (!timemode)
+	{
+		if (kbhit()) *c = getch();
+	}
+	else *c = getch();
+}
+
+void settingMenu()
+{
+	int select;
+			system("cls");
+			titleLine("설  정");
+			printf(" 1. 보기 모드 전환\n 2. 시간 흐름 방식 전환\n Q 돌아가기");
+			scanf("%d", &select);
+
+			switch (select)
+			{
+			case 1:
+				viewmode++;
+				if (viewmode > 2) viewmode = 0;
+				switch (viewmode)
+				{
+				case 0:
+					printf(" 보기 방식이 기본 모드로 전환되었습니다.");
+					break;
+				case 1:
+					printf(" 보기 방식이 내림차순 모드로 전환되었습니다.");
+					break;
+				case 2:
+					printf(" 보기 방식이 오름차순 모드로 전환되었습니다.");
+					break;
+				}
+				break;
+			case 2:
+				timemode++;
+				if (timemode > 1) timemode = 0;
+				switch (timemode)
+				{
+				case 0:
+					printf(" 시간 흐름이 자동으로 전환되었습니다.");
+					break;
+				case 1:
+					printf(" 시간 흐름이 수동으로 전환되었습니다.");
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			Sleep(300);
+			system("cls");
+			return;
 }
