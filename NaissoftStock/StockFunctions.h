@@ -2,7 +2,7 @@
 
 #define DEF_STOCK 9000
 #define DEF_MONEY 50000
-#define MAX_COMPANY 9
+#define MAX_COMPANY 10
 
 void ChangeStockPrice();
 

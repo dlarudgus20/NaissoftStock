@@ -7,19 +7,19 @@
 
 int main(void)
 {
-	int i, j, cnt, company, stocknum, loanmoney;
-
-	int menu;
+	int menu, cnt;
 	char c, pausemenu;
 
 	system("title 주식 게임");
+
+	startLogo();
 
 	printMainMenu();
 	scanf("%d", &menu);
 
 	InitStock();
 	init();
-	i = j = cnt = month = day = hour = company = 0;
+	cnt = month = day = hour =  0;
 
 	switch (menu)
 	{
@@ -65,7 +65,7 @@ int main(void)
 		case 27:
 			system("cls");
 			titleLine("일시 정지");
-			printf(" 1. 통  계\n\n 2. 대  출\n\n 3. 갚  기\n\n 4. 저  장\n\n 5. 끝내기\n\n Q 돌아가기");
+			printf(" 1. 통  계\n\n 2. 대  출\n\n 3. 갚  기\n\n 4. 설  정\n\n 5. 끝내기\n\n Q 돌아가기");
 
 			scanf(" %c", &pausemenu);
 			switch (pausemenu)
@@ -74,20 +74,13 @@ int main(void)
 				showStats();
 				break;
 			case '2':
-				system("cls");
-				titleLine("대  출");
-				printf("\n 얼마를 대출받으시겠습니까?");
-				scanf("%d", &loanmoney);
-				loan(loanmoney);
+				loanMenu();
 				break;
 			case '3':
 				payback();
 				break;
 			case '4':
-				system("cls");
-				save();
-				printf("\n 게임이 저장되었습니다.");
-				Sleep(500);
+				settingMenu();
 				break;
 			case '5':
 				system("cls");
@@ -107,9 +100,12 @@ int main(void)
 		case 'S':
 			sellMenu();
 			break;
-		case 'T':
-		case 't':
-			settingMenu();
+		case 'E':
+		case 'e':
+			system("cls");
+			save();
+			printf("\n 게임이 저장되었습니다.");
+			Sleep(500);
 			break;
 		case 'W':
 		case 'w':
@@ -120,10 +116,13 @@ int main(void)
 				Sleep(300);
 			}
 			break;
+		case 'I':
+		case 'i':
+			showCompanyInfo();
 		default:
 			break;
 		}
-		for (i = 0; i < MAX_COMPANY; i++)
+		for (int i = 0; i < MAX_COMPANY; i++)
 			PrevStockPrice[i] = StockPrice[i];
 
 		if (cnt % 20 == 0)

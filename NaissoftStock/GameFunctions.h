@@ -10,7 +10,7 @@
 #define DELAY 100
 
 #define MAX_TIP 4
-#define MAX_NEWS 4
+#define MAX_NEWS 5
 
 extern FILE input, output;
 extern int month, day, hour;
@@ -43,3 +43,7 @@ void showStats();
 void getKey(char *);
 
 void settingMenu();
+
+void loanMenu();
+
+void showCompanyInfo();

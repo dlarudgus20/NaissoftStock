@@ -27,6 +27,12 @@
     <ClCompile Include="Lib.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Arts.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="StockFunctions.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameFunctions.h">
@@ -36,6 +42,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Stock.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Arts.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StockFunctions.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,25 +7,25 @@ void startLogo()
 {
 	setcursortype(NOCURSOR);
 
-	Sleep(700);
+	Sleep(500);
 	textcolor(8);
 	gotoxy(31, 10), printf("使 2015 Naissoft");
-	Sleep(70);
+	Sleep(50);
 	textcolor(7);
 	gotoxy(31, 10), printf("使 2015 Naissoft");
-	Sleep(70);
+	Sleep(50);
 	textcolor(15);
 	gotoxy(31, 10), printf("使 2015 Naissoft");
-	Sleep(1000);
+	Sleep(600);
 	textcolor(7);
 	gotoxy(31, 10), printf("使 2015 Naissoft");
-	Sleep(70);
+	Sleep(50);
 	textcolor(8);
 	gotoxy(31, 10), printf("使 2015 Naissoft");
-	Sleep(70);
+	Sleep(50);
 	system("cls");
 	textcolor(7);
-	Sleep(300);
+	Sleep(200);
 
 	setcursortype(NORMALCURSOR);
 }
