@@ -24,6 +24,8 @@ char *CompanyName[MAX_COMPANY] =
 	"기야조선업",
 };
 
+int companyOrder[MAX_COMPANY] = { 0 };
+
 void ChangeStockPrice()
 {
 	srand((int)time(NULL));
@@ -61,7 +63,11 @@ void ShowStockPrice(int mode)
 {
 	if (mode == 0)
 	{
-		for (int i = 0; i < MAX_COMPANY; i++) PrintStockPrice(i);
+		for (int i = 0; i < MAX_COMPANY; i++)
+		{
+			PrintStockPrice(i);
+			companyOrder[i] = i;
+		}
 		return;
 	}
 
@@ -90,6 +96,7 @@ void ShowStockPrice(int mode)
 				{
 					PrintStockPrice(j);
 					order[i] = 0;
+					companyOrder[i] = j;
 				}
 			}
 		}
@@ -116,6 +123,7 @@ void ShowStockPrice(int mode)
 				{
 					PrintStockPrice(j);
 					order[i] = 0;
+					companyOrder[i] = j;
 				}
 			}
 		}
@@ -157,32 +165,33 @@ void payback()
 	loanMoney = 0;
 }
 
-void buyStock(int stocknum, int company)
+void _buyStock(int stocknum, int company)
 {
-	for (int i = 0; i < stocknum; i++)
+
+}
+
+void buyStock(int order, int amount)
+{
+	for (int i = 0; i < amount; i++)
 	{
-		if (company <= MAX_COMPANY)
+		if (StockPrice[order] <= Money)
 		{
-			if (StockPrice[company - 1] <= Money)
-			{
-				system("cls");
-				now = head;
+			system("cls");
+			now = head;
 
-				tmp.company = company - 1;
-				tmp.price = StockPrice[company - 1];
-				now = InsertStock(now, &tmp);
+			tmp.company = order;
+			tmp.price = StockPrice[order];
+			now = InsertStock(now, &tmp);
 
-				Stocks++;
-				StockDeal++;
-				printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockPrice[company - 1], Stocks);
-				Money -= StockPrice[company - 1];
-				printf(" 남은 돈은 %d원입니다.\n", Money);
-			}
-			else
-			{
-				printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
-				break;
-			}
+			Stocks++;
+			StockDeal++;
+			printf(" %d원을 주고 번째 주식을 구입하였습니다. 주식이 %d개입니다.\n", StockPrice[order], Stocks);
+			Money -= StockPrice[order];
+			printf(" 남은 돈은 %d원입니다.\n", Money);
+		}
+		else
+		{
+			printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
 		}
 	}
 }

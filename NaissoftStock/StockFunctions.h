@@ -4,6 +4,8 @@
 #define DEF_MONEY 50000
 #define MAX_COMPANY 10
 
+extern int companyOrder[MAX_COMPANY];
+
 void ChangeStockPrice();
 
 void ShowStockPrice(int);
