@@ -61,7 +61,7 @@ void init()
 void ShowMain()
 {
 	gotoxy(0, 1);
-	printf(" Stock! - Windows®용 주식 게임\n ver 1.5.1017\n\n B 사기, S 팔기, V 목록, E 저장, I 회사 정보, Esc 메뉴");
+	printf(" Stock! - Windows®용 주식 게임\n ver 1.5.1022\n\n B 사기, S 팔기, V 목록, E 저장, I 회사 정보, Esc 메뉴");
 	if (timemode == 1) printf(" W 기다리기");
 	gotoxy(0, 4);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
@@ -153,30 +153,26 @@ void showTipNews()
 	}
 }
 
-void buyMenu()
+void buyMenu(int order)
 {
-	int company, stocknum;
+	char ch;
+	int amount;
 
 	system("cls");
 	titleLine("주식 사기");
-	printf(" 주식 가격 :\n\n");
-	for (int i = 0; i < MAX_COMPANY; i++)
-	{
-		printf(" %d : %-20s, 가격 : %d원\n", i + 1, CompanyName[i], StockPrice[i]);
-	}
 
-	printf("\n 어느 회사의 주식을 구입하시겠습니까?\n 취소하려면 0을 선택하세요.\n");
-	scanf("%d", &company);
+	printf(" 현재 %s 회사의 주가는 %d원입니다.\n 구입하시겠습니까? Y / N", CompanyName[order], StockPrice[order]);
+	scanf(" %c", &ch);
 
-	if (company != 0)
+	if (ch == 'Y' || ch == 'y')
 	{
 		printf("\n 몇 개를 구입하시겠습니까?\n");
-		scanf("%d", &stocknum);
+		scanf("%d", &amount);
 
-		buyStock(stocknum, company);
-
-		Sleep(500);
+		buyStock(order, amount);
 	}
+	printf("\n\n 구입하였습니다.");
+	Sleep(2000);
 	system("cls");
 	return;
 }

@@ -34,7 +34,7 @@ void save();
 
 void showTipNews();
 
-void buyMenu();
+void buyMenu(int);
 
 void sellMenu();
 

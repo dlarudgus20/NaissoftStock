@@ -7,7 +7,7 @@
 
 int main(void)
 {
-	int menu, cnt;
+	int menu, cnt, order;
 	char c, pausemenu;
 
 	system("title 주식 게임");
@@ -19,7 +19,7 @@ int main(void)
 
 	InitStock();
 	init();
-	cnt = month = day = hour =  0;
+	cnt = month = day = hour = order = 0;
 
 	switch (menu)
 	{
@@ -48,6 +48,13 @@ int main(void)
 			system("cls");
 		}
 		ShowMain();
+
+		gotoxy(57, 9 + order - 1);
+		printf("  ");
+		gotoxy(57, 9 + order + 1);
+		printf("  ");
+		gotoxy(57, 9 + order);
+		printf("◀");
 		
 		c = '\0';
 		getKey(&c);
@@ -56,7 +63,7 @@ int main(void)
 		{
 		case 'b':
 		case 'B':
-			buyMenu();
+			buyMenu(order);
 			break;
 		case 'v':
 		case 'V':
@@ -119,6 +126,13 @@ int main(void)
 		case 'I':
 		case 'i':
 			showCompanyInfo();
+			break;
+		case '2':
+			if (order < MAX_COMPANY - 1) order++;
+			break;
+		case '8':
+			if (order > 0) order--;
+			break;
 		default:
 			break;
 		}
