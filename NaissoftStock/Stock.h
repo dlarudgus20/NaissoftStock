@@ -8,6 +8,7 @@ struct Stock
 	Stock *prev;
 };
 
+extern Stock *head, *now, tmp;
 
 void InitStock();
 
